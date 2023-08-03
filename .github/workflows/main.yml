@@ -26,7 +26,7 @@ jobs:
           node-version: 18.11
 
       - name: Build
-        run: npm install && npm run build
+        run: npm install && npm run prod
 
       - name: Deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
