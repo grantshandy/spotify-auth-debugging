@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Authentication Tester</title>
+</head>
+
+<body>
+  <p>Logged Out</p>
+  <script type="module">
+    import {SpotifyApi} from "@spotify/web-api-ts-sdk"
+
+    const getToken = () =>
+      localStorage.getItem('spotify-sdk:AuthorizationCodeWithPKCEStrategy:token');
+    const sdk = SpotifyApi.withUserAuthorization(
+      "2ed0e6e8b06842fb854cb15e1690a7b5",
+      window.location.origin,
+      [],
+    );
+
+    const beforeToken = getToken();
+    console.log('before getAccessToken: ' + (beforeToken ? true : false));
+
+    sdk.getAccessToken().then((token) => {
+      const afterToken = getToken();
+      console.log('after getAccessToken: ' + (afterToken ? true : false));
+
+      if (beforeToken != afterToken) {
+        alert("getAccessToken changed localStorage's token. You're probably about to redirect.");
+      }
+
+      if (!token) {
+        sdk.authenticate();
+      } else {
+        document.documentElement.innerHTML = `
+          <p>Logged In</p>
+          <button onclick="localStorage.clear(); location.reload();">Log Out</button>
+        `;
+      }
+    });
+
+    sdk
+      .currentUser
+      .profile()
+      .then((profile) => {
+        document.documentElement.innerHTML += `<p>User: ${profile.display_name}</p>`;
+      });
+  </script>
+</body>
+
+</html>
