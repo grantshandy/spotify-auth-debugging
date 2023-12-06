@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "devDependencies": {
-    "vite": "^4.4.5"
+    "vite": "^4.4.12"
   },
   "dependencies": {
     "@spotify/web-api-ts-sdk": "^1.0.3"
